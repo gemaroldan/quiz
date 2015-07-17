@@ -11,3 +11,8 @@ exports.answer = function(req,res) {
 		res.render('quizes/answer',{respuesta:'Incorrecto'});
 	}
 };
+
+// GET /quizes/author
+exports.author = function(req,res){
+    res.render('quizes/author',{nombre:'Gema Roldán', foto:'http://diegojfrancodominguez.es/proyectos/maqueta1/images/mujer.jpg', video:'https://www.youtube.com/watch?v=0Te6Rd68oo4'});
+}
