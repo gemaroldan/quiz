@@ -1,3 +1,12 @@
+<p>
+<form method="get" action="/quizes" >
+  <label for="search" class="rem">Buscar pregunta:</label>
+  <input type="text" id="search" name="search" value="<%= search %>"/>
+  <input type="submit" value="Buscar">
+</form>
+</p>
+
+</p>
 <table>
 <% var i; for (i=0; i<quizes.length; i++) { %>
 	<tr>
