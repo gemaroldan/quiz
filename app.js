@@ -31,9 +31,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper dinamicos
 app.use(function(req, res, next){
+	// redireccion por defecto
+	if (!req.session.redir){
+		req.session.redir ='/';
+	}
+
 	// guardar path en session.redir para despues de login
 
 	if (!req.path.match(/\/login|\/logout/)){
+		req.session.error = '';
 		req.session.redir = req.path;
 	}
 	
@@ -42,6 +48,26 @@ app.use(function(req, res, next){
 	next();
 });
 
+// AUTOLOGOUT
+app.use(function(req, res, next) {
+	var maxTimeTransaction = 120000;
+	var lastTransaction = new Date().getTime();
+	if (req.session.user) {
+		if ((lastTransaction - req.session.user.timeTransaction) > (maxTimeTransaction)) {
+			delete req.session.user;
+			var minutes = Math.floor(maxTimeTransaction / 60000);
+			var seconds = ((maxTimeTransaction % 60000) / 1000).toFixed(0);
+			seconds = (seconds < 10 ? '0' : '') + seconds;
+			req.session.error = 'Ha superado el tiempo de sesión ('+minutes+':'+seconds+')';
+			res.redirect("/login");			
+		} else {
+			req.session.user.timeTransaction = new Date().getTime();
+			next();
+		}
+    } else {
+        next();
+	}
+});
 
 app.use('/', routes);
 

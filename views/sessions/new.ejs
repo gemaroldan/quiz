@@ -1,3 +1,7 @@
+<%if(session && session.error){%>
+<span id='ErrorMsgs'><%= session.error %></span><br/>
+<%}%>
+
 <h2>Login</h2>
 
 <form method='POST' action="/login">
